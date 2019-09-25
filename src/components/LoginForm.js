@@ -2,24 +2,47 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Card, CardSection, Input, Button } from './common';
+import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
 
-onEmailChange(text){
+onEmailChange=(text)=>{
     this.props.emailChanged(text);
 }
 
-onPasswordChange(text){
+onPasswordChange=(text)=>{
     this.props.passwordChanged(text);
 }
 
-onLoginPress(){
+onLoginPress=()=>{
     const { email, password } = this.props;
     console.log(email+' '+password)
 
     this.props.loginUser({ email, password});
-    alert('hello')
+}
+
+renderButton = () =>{
+    if(this.props.loading)
+    {
+        return <Spinner size="large"/>
+    }
+    return(
+        <Button onPress={this.onLoginPress}>
+                  Login
+        </Button>
+    )
+}
+
+renderError=()=> {
+    if(this.props.error){
+        return(
+            <View style={{ backgroundColor:'white'}}>
+                <Text style={styles.errorTextStyle}>
+                    {this.props.error}
+                </Text>
+            </View>
+        )
+    }
 }
 
   render() {
@@ -30,7 +53,7 @@ onLoginPress(){
             <Input
                 label="Email"
                 placeholder="email@gmail.com"
-                onChangeText={this.onEmailChange.bind(this)}
+                onChangeText={this.onEmailChange}
                 value={this.props.email}
             />
           </CardSection>
@@ -39,14 +62,13 @@ onLoginPress(){
                 secureTextEntry
                 label="Password"
                 placeholder="********"
-                onChangeText={this.onPasswordChange.bind(this)}
+                onChangeText={this.onPasswordChange}
                 value={this.props.password}
             />
           </CardSection>
+          {this.renderError()}
           <CardSection>
-              <Button onPress={this.onLoginPress.bind(this)}>
-                  Login
-              </Button>
+              {this.renderButton()}
           </CardSection>
       </Card>
       </View>
@@ -54,11 +76,17 @@ onLoginPress(){
   }
 }
 
-const mapStateToProps = state =>{
-    return {
-        email: state.auth.email,
-        password: state.auth.password
+const styles = {
+    errorTextStyle:{
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'red'
     }
+}
+
+const mapStateToProps = ({ auth }) =>{
+    const { email, password, error, loading} = auth
+    return { email, password, error, loading };
 }
 
 export default connect(mapStateToProps,
