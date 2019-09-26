@@ -5,3 +5,4 @@ export const LOGIN_USER_FAIL ='login_user_fail';
 export const LOGIN_USER = 'login_user';
 export const EMPLOYEE_UPDATE ='employee_update'; // Create New Employee
 export const EMPLOYEE_CREATE ='employee_create'; //Refresh to null value create employee page
+export const EMPLOYEES_FETCH_SUCCESS ='employess_fetch_success';
