@@ -10,7 +10,7 @@ class ListItem extends Component {
         const { name } = this.props.employee;
 
         return (
-            <TouchableWithoutFeedback onPress={()=> Actions.employeeCreate({ employee: this.props.employee})}>
+            <TouchableWithoutFeedback onPress={()=> Actions.employeeEdit({ employee: this.props.employee})}>
                 <View>
                     <CardSection>
                         <Text style={{ fontSize: 20, paddingLeft: 20, }}>{name}</Text>
